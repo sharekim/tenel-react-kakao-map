@@ -255,6 +255,14 @@ const KakaoMap = React.forwardRef<IKakaoMapsMapRef, React.PropsWithChildren<IKak
   }, []);
 
   React.useEffect(() => {
+    kakao.maps.event.addListener(map, "click", listeners.current.onClick);
+  
+    return () => {
+      kakao.maps.event.removeListener(map, "click", listeners.current.onClick);
+    }
+  }, [props.onClick]);
+
+  React.useEffect(() => {
     const latlng = new kakao.maps.LatLng(props.center.lat, props.center.lng);
     map.setCenter(latlng);
   }, [props.center.lat, props.center.lng]);
