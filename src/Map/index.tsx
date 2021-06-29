@@ -4,7 +4,15 @@ import PropTypes from "prop-types";
 
 import KakaoMapContext from "./context";
 
-import type { IKakao, IKakaoCopyrightPosition, TKakaoOverayMapTypeIdKey, TKakaoBaseMapTypeIdKey, IKakaoMapOptions, IKakaoMap, IKakaoMouseEvent } from "tenel-kakao-map";
+import type {
+  IKakao,
+  IKakaoCopyrightPosition,
+  TKakaoOverayMapTypeIdKey,
+  TKakaoBaseMapTypeIdKey,
+  IKakaoMapOptions,
+  IKakaoMap,
+  IKakaoMouseEvent,
+} from "tenel-kakao-map";
 
 declare var kakao: IKakao;
 
@@ -14,7 +22,7 @@ export interface IKakaoMapsMapRef {
 
 export interface IKakaoMapsMapProps {
   container?: HTMLElement;
-  center: { lat: number, lng: number };
+  center: { lat: number; lng: number };
   baseMapType?: TKakaoBaseMapTypeIdKey;
   overlayMapTypes?: TKakaoOverayMapTypeIdKey[];
   cursor?: string;
@@ -29,7 +37,7 @@ export interface IKakaoMapsMapProps {
     reverse?: boolean;
   };
   bounds?: {
-    value: [{ lat: number, lng: number }, { lat: number, lng: number }],
+    value: [{ lat: number; lng: number }, { lat: number; lng: number }];
     paddingTop?: number;
     paddingRight?: number;
     paddingBottom?: number;
@@ -37,35 +45,26 @@ export interface IKakaoMapsMapProps {
   };
   onZoomStart?: (e: { zoomLevel: number }) => void;
   onZoomChange?: (e: { zoomLevel: number }) => void;
-  onClick?: (e: { position: { lat: number, lng: number } }) => void;
-  onRightClick?: (e: { position: { lat: number, lng: number } }) => void;
-  onDoubleClick?: (e: { position: { lat: number, lng: number } }) => void;
-  onDrag?: (e: { position: { lat: number, lng: number } }) => void;
-  onDragEnd?: (e: { position: { lat: number, lng: number } }) => void;
-  onDragStart?: (e: { position: { lat: number, lng: number } }) => void;
-  onMouseMove?: (e: { position: { lat: number, lng: number } }) => void;
+  onClick?: (e: { position: { lat: number; lng: number } }) => void;
+  onRightClick?: (e: { position: { lat: number; lng: number } }) => void;
+  onDoubleClick?: (e: { position: { lat: number; lng: number } }) => void;
+  onDrag?: (e: { position: { lat: number; lng: number } }) => void;
+  onDragEnd?: (e: { position: { lat: number; lng: number } }) => void;
+  onDragStart?: (e: { position: { lat: number; lng: number } }) => void;
+  onMouseMove?: (e: { position: { lat: number; lng: number } }) => void;
   onTilesLoaded?: (e: {
-    zoomLevel: number,
-    position: { lat: number, lng: number },
-    bounds: [
-      { lat: number, lng: number },
-      { lat: number, lng: number },
-    ],
+    zoomLevel: number;
+    position: { lat: number; lng: number };
+    bounds: [{ lat: number; lng: number }, { lat: number; lng: number }];
   }) => void;
   onBoundsChanged?: (e: {
-    bounds: [
-      { lat: number, lng: number },
-      { lat: number, lng: number },
-    ],
+    bounds: [{ lat: number; lng: number }, { lat: number; lng: number }];
   }) => void;
   /** bounds: [sw, ne] */
   onIdle?: (e: {
-    zoomLevel: number,
-    position: { lat: number, lng: number },
-    bounds: [
-      { lat: number, lng: number },
-      { lat: number, lng: number },
-    ],
+    zoomLevel: number;
+    position: { lat: number; lng: number };
+    bounds: [{ lat: number; lng: number }, { lat: number; lng: number }];
   }) => void;
 }
 
@@ -74,8 +73,13 @@ const Position = PropTypes.shape({
   lng: PropTypes.number.isRequired,
 }).isRequired;
 
-const KakaoMap = React.forwardRef<IKakaoMapsMapRef, React.PropsWithChildren<IKakaoMapsMapProps>>((props, ref) => {
-  const listeners = React.useRef<{ [listener: string]: (...args: any[]) => void }>({});
+const KakaoMap = React.forwardRef<
+  IKakaoMapsMapRef,
+  React.PropsWithChildren<IKakaoMapsMapProps>
+>((props, ref) => {
+  const listeners = React.useRef<{
+    [listener: string]: (...args: any[]) => void;
+  }>({});
 
   listeners.current.onClick = function onClick(e: IKakaoMouseEvent) {
     props.onClick?.({
@@ -84,16 +88,18 @@ const KakaoMap = React.forwardRef<IKakaoMapsMapRef, React.PropsWithChildren<IKak
         lng: e.latLng.getLng(),
       },
     });
-  }
+  };
 
-  listeners.current.onDoubleClick = function onDoubleClick(e: IKakaoMouseEvent) {
+  listeners.current.onDoubleClick = function onDoubleClick(
+    e: IKakaoMouseEvent
+  ) {
     props.onDoubleClick?.({
       position: {
         lat: e.latLng.getLat(),
         lng: e.latLng.getLng(),
       },
     });
-  }
+  };
 
   listeners.current.onRightClick = function onRightClick(e: IKakaoMouseEvent) {
     props.onRightClick?.({
@@ -102,7 +108,7 @@ const KakaoMap = React.forwardRef<IKakaoMapsMapRef, React.PropsWithChildren<IKak
         lng: e.latLng.getLng(),
       },
     });
-  }
+  };
 
   listeners.current.onMouseMove = function onMouseMove(e: IKakaoMouseEvent) {
     props.onMouseMove?.({
@@ -111,7 +117,7 @@ const KakaoMap = React.forwardRef<IKakaoMapsMapRef, React.PropsWithChildren<IKak
         lng: e.latLng.getLng(),
       },
     });
-  }
+  };
 
   listeners.current.onDrag = function onDrag() {
     props.onDrag?.({
@@ -120,7 +126,7 @@ const KakaoMap = React.forwardRef<IKakaoMapsMapRef, React.PropsWithChildren<IKak
         lng: map.getCenter().getLng(),
       },
     });
-  }
+  };
 
   listeners.current.onDragStart = function onDragStart() {
     props.onDragStart?.({
@@ -129,7 +135,7 @@ const KakaoMap = React.forwardRef<IKakaoMapsMapRef, React.PropsWithChildren<IKak
         lng: map.getCenter().getLng(),
       },
     });
-  }
+  };
 
   listeners.current.onDragEnd = function onDragEnd() {
     props.onDragEnd?.({
@@ -138,15 +144,15 @@ const KakaoMap = React.forwardRef<IKakaoMapsMapRef, React.PropsWithChildren<IKak
         lng: map.getCenter().getLng(),
       },
     });
-  }
+  };
 
   listeners.current.onZoomStart = function onZoomStart() {
     props.onZoomStart?.({ zoomLevel: map.getLevel() });
-  }
+  };
 
   listeners.current.onZoomChange = function onZoomChange() {
     props.onZoomChange?.({ zoomLevel: map.getLevel() });
-  }
+  };
 
   listeners.current.onIdle = function onIdle() {
     props.onIdle?.({
@@ -156,20 +162,32 @@ const KakaoMap = React.forwardRef<IKakaoMapsMapRef, React.PropsWithChildren<IKak
         lng: map.getCenter().getLng(),
       },
       bounds: [
-        { lat: map.getBounds().getSouthWest().getLat(), lng: map.getBounds().getSouthWest().getLng() },
-        { lat: map.getBounds().getNorthEast().getLat(), lng: map.getBounds().getNorthEast().getLng() },
+        {
+          lat: map.getBounds().getSouthWest().getLat(),
+          lng: map.getBounds().getSouthWest().getLng(),
+        },
+        {
+          lat: map.getBounds().getNorthEast().getLat(),
+          lng: map.getBounds().getNorthEast().getLng(),
+        },
       ],
     });
-  }
+  };
 
   listeners.current.onBoundsChanged = function onBoundsChanged() {
     props.onBoundsChanged?.({
       bounds: [
-        { lat: map.getBounds().getSouthWest().getLat(), lng: map.getBounds().getSouthWest().getLng() },
-        { lat: map.getBounds().getNorthEast().getLat(), lng: map.getBounds().getNorthEast().getLng() },
+        {
+          lat: map.getBounds().getSouthWest().getLat(),
+          lng: map.getBounds().getSouthWest().getLng(),
+        },
+        {
+          lat: map.getBounds().getNorthEast().getLat(),
+          lng: map.getBounds().getNorthEast().getLng(),
+        },
       ],
     });
-  }
+  };
 
   listeners.current.onTilesLoaded = function onTilesLoaded() {
     props.onTilesLoaded?.({
@@ -179,11 +197,17 @@ const KakaoMap = React.forwardRef<IKakaoMapsMapRef, React.PropsWithChildren<IKak
         lng: map.getCenter().getLng(),
       },
       bounds: [
-        { lat: map.getBounds().getSouthWest().getLat(), lng: map.getBounds().getSouthWest().getLng() },
-        { lat: map.getBounds().getNorthEast().getLat(), lng: map.getBounds().getNorthEast().getLng() },
+        {
+          lat: map.getBounds().getSouthWest().getLat(),
+          lng: map.getBounds().getSouthWest().getLng(),
+        },
+        {
+          lat: map.getBounds().getNorthEast().getLat(),
+          lng: map.getBounds().getNorthEast().getLng(),
+        },
       ],
     });
-  }
+  };
   const [map, mapEl] = React.useMemo<[IKakaoMap, HTMLDivElement]>(() => {
     const $mapEl = document.createElement("div");
     $mapEl.style.width = "100%";
@@ -201,17 +225,32 @@ const KakaoMap = React.forwardRef<IKakaoMapsMapRef, React.PropsWithChildren<IKak
     $map.setMaxLevel(props.maxLevel!);
     $map.setMinLevel(props.minLevel!);
     $map.setMapTypeId(kakao.maps.MapTypeId[props.baseMapType!]);
-    $map.setCopyrightPosition(kakao.maps.CopyrightPosition[props.copyright!.position], props.copyright!.reverse);
+    $map.setCopyrightPosition(
+      kakao.maps.CopyrightPosition[props.copyright!.position],
+      props.copyright!.reverse
+    );
 
     if (props.cursor) {
       $map.setCursor(props.cursor);
     }
 
     if (props.bounds) {
-      const sw = new kakao.maps.LatLng(props.bounds.value[0].lat, props.bounds.value[0].lng);
-      const ne = new kakao.maps.LatLng(props.bounds.value[1].lat, props.bounds.value[1].lng);
+      const sw = new kakao.maps.LatLng(
+        props.bounds.value[0].lat,
+        props.bounds.value[0].lng
+      );
+      const ne = new kakao.maps.LatLng(
+        props.bounds.value[1].lat,
+        props.bounds.value[1].lng
+      );
       const kakaoBounds = new kakao.maps.LatLngBounds(sw, ne);
-      $map.setBounds(kakaoBounds, props.bounds.paddingTop, props.bounds.paddingRight, props.bounds.paddingBottom, props.bounds.paddingLeft);
+      $map.setBounds(
+        kakaoBounds,
+        props.bounds.paddingTop,
+        props.bounds.paddingRight,
+        props.bounds.paddingBottom,
+        props.bounds.paddingLeft
+      );
     }
 
     return [$map, $mapEl];
@@ -229,78 +268,168 @@ const KakaoMap = React.forwardRef<IKakaoMapsMapRef, React.PropsWithChildren<IKak
     kakao.maps.event.addListener(map, "click", listeners.current.onClick);
     return () => {
       kakao.maps.event.removeListener(map, "click", listeners.current.onClick);
-    }
+    };
   }, [props.onClick]);
 
   React.useEffect(() => {
-    kakao.maps.event.addListener(map, "tilesloaded", listeners.current.onTilesLoaded);
+    if (!map) return;
+    kakao.maps.event.addListener(
+      map,
+      "tilesloaded",
+      listeners.current.onTilesLoaded
+    );
     return () => {
-      kakao.maps.event.removeListener(map, "tilesloaded", listeners.current.onTilesLoaded);
-    }
+      kakao.maps.event.removeListener(
+        map,
+        "tilesloaded",
+        listeners.current.onTilesLoaded
+      );
+    };
   }, [props.onTilesLoaded]);
 
   React.useEffect(() => {
-    kakao.maps.event.addListener(map, "bounds_changed", listeners.current.onBoundsChanged);
+    if (!map) return;
+
+    kakao.maps.event.addListener(
+      map,
+      "bounds_changed",
+      listeners.current.onBoundsChanged
+    );
     return () => {
-      kakao.maps.event.removeListener(map, "bounds_changed", listeners.current.onBoundsChanged);
-    }
+      kakao.maps.event.removeListener(
+        map,
+        "bounds_changed",
+        listeners.current.onBoundsChanged
+      );
+    };
   }, [props.onBoundsChanged]);
 
   React.useEffect(() => {
+    if (!map) return;
+
     kakao.maps.event.addListener(map, "idle", listeners.current.onIdle);
     return () => {
-      kakao.maps.event.removeListener(map, "idle", listeners.current.onIdle);
-    }
+      kakao.maps.event.removeListener(
+        map,
+        "idle",
+        listeners.current.onIdle
+      );
+    };
   }, [props.onIdle]);
 
   React.useEffect(() => {
-    kakao.maps.event.addListener(map, "zoom_changed", listeners.current.onZoomChange);
+    if (!map) return;
+
+    kakao.maps.event.addListener(
+      map,
+      "zoom_changed",
+      listeners.current.onZoomChange
+    );
     return () => {
-      kakao.maps.event.removeListener(map, "zoom_changed", listeners.current.onZoomChange);
-    }
+      kakao.maps.event.removeListener(
+        map,
+        "zoom_changed",
+        listeners.current.onZoomChange
+      );
+    };
   }, [props.onZoomChange]);
 
   React.useEffect(() => {
-    kakao.maps.event.addListener(map, "zoom_start", listeners.current.onZoomStart);
+    if (!map) return;
+
+    kakao.maps.event.addListener(
+      map,
+      "zoom_start",
+      listeners.current.onZoomStart
+    );
     return () => {
-      kakao.maps.event.removeListener(map, "zoom_start", listeners.current.onZoomStart);
-    }
+      kakao.maps.event.removeListener(
+        map,
+        "zoom_start",
+        listeners.current.onZoomStart
+      );
+    };
   }, [props.onZoomStart]);
 
-
   React.useEffect(() => {
-    kakao.maps.event.addListener(map, "dragstart", listeners.current.onDragStart);
+    if (!map) return;
+
+    kakao.maps.event.addListener(
+      map,
+      "dragstart",
+      listeners.current.onDragStart
+    );
     return () => {
-      kakao.maps.event.removeListener(map, "dragstart", listeners.current.onDragStart);
-    }
+      kakao.maps.event.removeListener(
+        map,
+        "dragstart",
+        listeners.current.onDragStart
+      );
+    };
   }, [props.onDragStart]);
 
   React.useEffect(() => {
+    if (!map) return;
+
     kakao.maps.event.addListener(map, "drag", listeners.current.onDrag);
     return () => {
-      kakao.maps.event.removeListener(map, "drag", listeners.current.onDrag);
-    }
+      kakao.maps.event.removeListener(
+        map,
+        "drag",
+        listeners.current.onDrag
+      );
+    };
   }, [props.onDrag]);
 
   React.useEffect(() => {
-    kakao.maps.event.addListener(map, "rightclick", listeners.current.onRightClick);
+    if (!map) return;
+
+    kakao.maps.event.addListener(
+      map,
+      "rightclick",
+      listeners.current.onRightClick
+    );
     return () => {
-      kakao.maps.event.removeListener(map, "rightclick", listeners.current.onRightClick);
-    }
+      kakao.maps.event.removeListener(
+        map,
+        "rightclick",
+        listeners.current.onRightClick
+      );
+    };
   }, [props.onRightClick]);
 
   React.useEffect(() => {
-    kakao.maps.event.addListener(map, "mousemove", listeners.current.onMouseMove);
+    if (!map) return;
+
+    kakao.maps.event.addListener(
+      map,
+      "mousemove",
+      listeners.current.onMouseMove
+    );
     return () => {
-      kakao.maps.event.removeListener(map, "mousemove", listeners.current.onMouseMove);
-    }
+      kakao.maps.event.removeListener(
+        map,
+        "mousemove",
+        listeners.current.onMouseMove
+      );
+    };
   }, [props.onMouseMove]);
 
   React.useEffect(() => {
-    kakao.maps.event.addListener(map, "dblclick" as any, listeners.current.onDoubleClick);
+    if (!map) return;
+
+    kakao.maps.event.addListener(
+      map,
+      "dblclick" as any,
+      listeners.current.onDoubleClick
+    );
     return () => {
-      kakao.maps.event.removeListener(map, "dblclick" as any, listeners.current.onDoubleClick);
-    }
+      kakao.maps.event.removeListener(
+        map,
+        "dblclick" as any,
+        listeners.current.onDoubleClick
+      );
+    };
   }, [props.onDoubleClick]);
 
   React.useEffect(() => {
@@ -318,11 +447,29 @@ const KakaoMap = React.forwardRef<IKakaoMapsMapRef, React.PropsWithChildren<IKak
 
   React.useEffect(() => {
     if (!props.bounds) return;
-    const sw = new kakao.maps.LatLng(props.bounds.value[0].lat, props.bounds.value[0].lng);
-    const ne = new kakao.maps.LatLng(props.bounds.value[1].lat, props.bounds.value[1].lng);
+    const sw = new kakao.maps.LatLng(
+      props.bounds.value[0].lat,
+      props.bounds.value[0].lng
+    );
+    const ne = new kakao.maps.LatLng(
+      props.bounds.value[1].lat,
+      props.bounds.value[1].lng
+    );
     const kakaoBounds = new kakao.maps.LatLngBounds(sw, ne);
-    map.setBounds(kakaoBounds, props.bounds.paddingTop, props.bounds.paddingRight, props.bounds.paddingBottom, props.bounds.paddingLeft);
-  }, [props.bounds?.value.flat(Infinity).join(), props.bounds?.paddingTop, props.bounds?.paddingRight, props.bounds?.paddingBottom, props.bounds?.paddingLeft]);
+    map.setBounds(
+      kakaoBounds,
+      props.bounds.paddingTop,
+      props.bounds.paddingRight,
+      props.bounds.paddingBottom,
+      props.bounds.paddingLeft
+    );
+  }, [
+    props.bounds?.value.flat(Infinity).join(),
+    props.bounds?.paddingTop,
+    props.bounds?.paddingRight,
+    props.bounds?.paddingBottom,
+    props.bounds?.paddingLeft,
+  ]);
 
   React.useEffect(() => {
     map.setMapTypeId(kakao.maps.MapTypeId[props.baseMapType!]);
@@ -331,7 +478,9 @@ const KakaoMap = React.forwardRef<IKakaoMapsMapRef, React.PropsWithChildren<IKak
   React.useEffect(() => {
     // tslint:disable-next-line: forin
     for (const type in kakao.maps.MapTypeId) {
-      map.removeOverlayMapTypeId(kakao.maps.MapTypeId[type as TKakaoOverayMapTypeIdKey]);
+      map.removeOverlayMapTypeId(
+        kakao.maps.MapTypeId[type as TKakaoOverayMapTypeIdKey]
+      );
     }
     props.overlayMapTypes?.forEach((type) => {
       map.addOverlayMapTypeId(kakao.maps.MapTypeId[type]);
@@ -339,7 +488,10 @@ const KakaoMap = React.forwardRef<IKakaoMapsMapRef, React.PropsWithChildren<IKak
   }, [props.overlayMapTypes]);
 
   React.useEffect(() => {
-    map.setCopyrightPosition(kakao.maps.CopyrightPosition[props.copyright!.position], props.copyright!.reverse);
+    map.setCopyrightPosition(
+      kakao.maps.CopyrightPosition[props.copyright!.position],
+      props.copyright!.reverse
+    );
   }, [props.copyright?.reverse, props.copyright?.position]);
 
   React.useEffect(() => {
@@ -365,7 +517,9 @@ const KakaoMap = React.forwardRef<IKakaoMapsMapRef, React.PropsWithChildren<IKak
   React.useEffect(() => {
     const options = {
       anchor: undefined,
-      animate: props.levelDuration ? { duration: props.levelDuration } : undefined
+      animate: props.levelDuration
+        ? { duration: props.levelDuration }
+        : undefined,
     };
     map.setLevel(props.level!, options);
   }, [props.levelDuration, props.level]);
@@ -383,7 +537,7 @@ const KakaoMap = React.forwardRef<IKakaoMapsMapRef, React.PropsWithChildren<IKak
       {mount && props.children}
     </KakaoMapContext.Provider>
   );
-})
+});
 
 KakaoMap.defaultProps = {
   zoomable: true,
@@ -415,7 +569,17 @@ KakaoMap.propTypes = {
   /** 지도의 타입을 설정 */
   baseMapType: PropTypes.oneOf(["ROADMAP", "SKYVIEW", "HYBRID"] as const),
   /** 지도에 오버레이할 타입을 설정 */
-  overlayMapTypes: PropTypes.arrayOf(PropTypes.oneOf(["OVERLAY", "ROADVIEW", "TRAFFIC", "TERRAIN", "BICYCLE", "BICYCLE_HYBRID", "USE_DISTRICT"] as const).isRequired),
+  overlayMapTypes: PropTypes.arrayOf(
+    PropTypes.oneOf([
+      "OVERLAY",
+      "ROADVIEW",
+      "TRAFFIC",
+      "TERRAIN",
+      "BICYCLE",
+      "BICYCLE_HYBRID",
+      "USE_DISTRICT",
+    ] as const).isRequired
+  ),
   /** 확대/축소 가능 여부 */
   zoomable: PropTypes.bool,
   /** 드래그 가능 여부 */
@@ -426,9 +590,15 @@ KakaoMap.propTypes = {
   //   reverse?: boolean | undefined;
   // } | null | undefined> | undefined,
   copyright: PropTypes.shape({
-    position: PropTypes.oneOf<"BOTTOMLEFT" | "BOTTOMRIGHT">(["BOTTOMLEFT", "BOTTOMRIGHT"]).isRequired,
+    position: PropTypes.oneOf<"BOTTOMLEFT" | "BOTTOMRIGHT">([
+      "BOTTOMLEFT",
+      "BOTTOMRIGHT",
+    ]).isRequired,
     reverse: PropTypes.bool,
-  }) as React.Validator<{ position: keyof IKakaoCopyrightPosition; reverse?: boolean; }>,
+  }) as React.Validator<{
+    position: keyof IKakaoCopyrightPosition;
+    reverse?: boolean;
+  }>,
   /** 주어진 영역이 화면 안에 전부 나타날 수 있도록 지도의 중심 좌표와 확대 수준을 설정 */
   bounds: PropTypes.shape({
     value: PropTypes.arrayOf(Position).isRequired,
@@ -437,7 +607,7 @@ KakaoMap.propTypes = {
     paddingBottom: PropTypes.number,
     paddingLeft: PropTypes.number,
   }) as React.Validator<{
-    value: [{ lat: number, lng: number }, { lat: number, lng: number }];
+    value: [{ lat: number; lng: number }, { lat: number; lng: number }];
     paddingTop?: number;
     paddingRight?: number;
     paddingBottom?: number;
