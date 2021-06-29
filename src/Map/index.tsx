@@ -214,19 +214,6 @@ const KakaoMap = React.forwardRef<IKakaoMapsMapRef, React.PropsWithChildren<IKak
       $map.setBounds(kakaoBounds, props.bounds.paddingTop, props.bounds.paddingRight, props.bounds.paddingBottom, props.bounds.paddingLeft);
     }
 
-    kakao.maps.event.addListener($map, "click", listeners.current.onClick);
-    kakao.maps.event.addListener($map, "dblclick" as any, listeners.current.onDoubleClick);
-    kakao.maps.event.addListener($map, "rightclick", listeners.current.onRightClick);
-    kakao.maps.event.addListener($map, "mousemove", listeners.current.onMouseMove);
-    kakao.maps.event.addListener($map, "drag", listeners.current.onDrag);
-    kakao.maps.event.addListener($map, "dragstart", listeners.current.onDragStart);
-    kakao.maps.event.addListener($map, "dragend", listeners.current.onDragEnd);
-    kakao.maps.event.addListener($map, "zoom_start", listeners.current.onZoomStart);
-    kakao.maps.event.addListener($map, "zoom_changed", listeners.current.onZoomChange);
-    kakao.maps.event.addListener($map, "idle", listeners.current.onIdle);
-    kakao.maps.event.addListener($map, "bounds_changed", listeners.current.onBoundsChanged);
-    kakao.maps.event.addListener($map, "tilesloaded", listeners.current.onTilesLoaded);
-
     return [$map, $mapEl];
   }, []);
 
@@ -238,29 +225,82 @@ const KakaoMap = React.forwardRef<IKakaoMapsMapRef, React.PropsWithChildren<IKak
   }, [props.container]);
 
   React.useEffect(() => {
-    return () => {
-      kakao.maps.event.removeListener(map, "click", listeners.current.onClick);
-      kakao.maps.event.removeListener(map, "dblclick" as any, listeners.current.onDoubleClick);
-      kakao.maps.event.removeListener(map, "rightclick", listeners.current.onRightClick);
-      kakao.maps.event.removeListener(map, "mousemove", listeners.current.onMouseMove);
-      kakao.maps.event.removeListener(map, "drag", listeners.current.onDrag);
-      kakao.maps.event.removeListener(map, "dragstart", listeners.current.onDragStart);
-      kakao.maps.event.removeListener(map, "dragend", listeners.current.onDragEnd);
-      kakao.maps.event.removeListener(map, "zoom_start", listeners.current.onZoomStart);
-      kakao.maps.event.removeListener(map, "zoom_changed", listeners.current.onZoomChange);
-      kakao.maps.event.removeListener(map, "idle", listeners.current.onIdle);
-      kakao.maps.event.removeListener(map, "bounds_changed", listeners.current.onBoundsChanged);
-      kakao.maps.event.removeListener(map, "tilesloaded", listeners.current.onTilesLoaded);
-    }
-  }, []);
-
-  React.useEffect(() => {
     kakao.maps.event.addListener(map, "click", listeners.current.onClick);
-  
     return () => {
       kakao.maps.event.removeListener(map, "click", listeners.current.onClick);
     }
   }, [props.onClick]);
+
+  React.useEffect(() => {
+    kakao.maps.event.addListener(map, "tilesloaded" as any, listeners.current.onTilesLoaded);
+    return () => {
+      kakao.maps.event.removeListener(map, "tilesloaded" as any, listeners.current.onTilesLoaded);
+    }
+  }, [props.onTilesLoaded]);
+
+  React.useEffect(() => {
+    kakao.maps.event.addListener(map, "bounds_changed" as any, listeners.current.onBoundsChanged);
+    return () => {
+      kakao.maps.event.removeListener(map, "bounds_changed" as any, listeners.current.onBoundsChanged);
+    }
+  }, [props.onBoundsChanged]);
+
+  React.useEffect(() => {
+    kakao.maps.event.addListener(map, "idle" as any, listeners.current.onIdle);
+    return () => {
+      kakao.maps.event.removeListener(map, "idle" as any, listeners.current.onIdle);
+    }
+  }, [props.onIdle]);
+
+  React.useEffect(() => {
+    kakao.maps.event.addListener(map, "zoom_changed" as any, listeners.current.onZoomChange);
+    return () => {
+      kakao.maps.event.removeListener(map, "zoom_changed" as any, listeners.current.onZoomChange);
+    }
+  }, [props.onZoomChange]);
+
+  React.useEffect(() => {
+    kakao.maps.event.addListener(map, "zoom_start" as any, listeners.current.onZoomStart);
+    return () => {
+      kakao.maps.event.removeListener(map, "zoom_start" as any, listeners.current.onZoomStart);
+    }
+  }, [props.onZoomStart]);
+
+
+  React.useEffect(() => {
+    kakao.maps.event.addListener(map, "dragstart" as any, listeners.current.onDragStart);
+    return () => {
+      kakao.maps.event.removeListener(map, "dragstart" as any, listeners.current.onDragStart);
+    }
+  }, [props.onDragStart]);
+
+  React.useEffect(() => {
+    kakao.maps.event.addListener(map, "drag" as any, listeners.current.onDrag);
+    return () => {
+      kakao.maps.event.removeListener(map, "drag" as any, listeners.current.onDrag);
+    }
+  }, [props.onDrag]);
+
+  React.useEffect(() => {
+    kakao.maps.event.addListener(map, "rightclick" as any, listeners.current.onRightClick);
+    return () => {
+      kakao.maps.event.removeListener(map, "rightclick" as any, listeners.current.onRightClick);
+    }
+  }, [props.onRightClick]);
+
+  React.useEffect(() => {
+    kakao.maps.event.addListener(map, "mousemove", listeners.current.onMouseMove);
+    return () => {
+      kakao.maps.event.removeListener(map, "mousemove", listeners.current.onMouseMove);
+    }
+  }, [props.onMouseMove]);
+
+  React.useEffect(() => {
+    kakao.maps.event.addListener(map, "dblclick" as any, listeners.current.onDoubleClick);
+    return () => {
+      kakao.maps.event.removeListener(map, "dblclick" as any, listeners.current.onDoubleClick);
+    }
+  }, [props.onDoubleClick]);
 
   React.useEffect(() => {
     const latlng = new kakao.maps.LatLng(props.center.lat, props.center.lng);
