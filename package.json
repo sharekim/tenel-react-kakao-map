@@ -1,6 +1,6 @@
 {
-  "name": "tenel-react-kakao-map",
-  "version": "1.2.7",
+  "name": "sharekim-react-kakao-map",
+  "version": "0.0.1",
   "description": "kakao map with React",
   "main": "build/index.js",
   "scripts": {
@@ -12,10 +12,10 @@
   "keywords": [
     "react-kakao-map"
   ],
-  "author": "jaehun kim <kjaehun6546@gmail.com>",
-  "repository": "https://github.com/inceptionJh/tenel-react-kakao-map",
-  "homepage": "https://github.com/inceptionJh/tenel-react-kakao-map",
-  "bugs": "https://github.com/inceptionJh/tenel-react-kakao-map/issues",
+  "author": "sharekim",
+  "repository": "https://github.com/sharekim/tenel-react-kakao-map",
+  "homepage": "nazipsa.ai",
+  "bugs": "",
   "licenses": [
     {
       "type": "MIT",
